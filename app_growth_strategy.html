@@ -1,0 +1,809 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>App Development & Growth Strategy</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 50%, #667eea 100%);
+            color: white;
+            min-height: 100vh;
+            overflow-x: hidden;
+        }
+        
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        
+        .header {
+            text-align: center;
+            margin-bottom: 50px;
+            position: relative;
+        }
+        
+        .header h1 {
+            font-size: 3.5rem;
+            font-weight: 900;
+            background: linear-gradient(135deg, #00d4aa, #ffd700, #ff6b6b);
+            background-clip: text;
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin-bottom: 15px;
+            text-shadow: 0 0 30px rgba(255,255,255,0.3);
+        }
+        
+        .header p {
+            font-size: 1.3rem;
+            opacity: 0.9;
+            font-weight: 500;
+        }
+        
+        .strategy-tabs {
+            display: flex;
+            justify-content: center;
+            margin-bottom: 40px;
+            gap: 10px;
+            flex-wrap: wrap;
+        }
+        
+        .tab-btn {
+            background: rgba(255, 255, 255, 0.1);
+            border: 2px solid rgba(255, 255, 255, 0.2);
+            color: white;
+            padding: 12px 24px;
+            border-radius: 25px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-weight: 600;
+            backdrop-filter: blur(10px);
+        }
+        
+        .tab-btn:hover {
+            background: rgba(255, 255, 255, 0.2);
+            transform: translateY(-2px);
+        }
+        
+        .tab-btn.active {
+            background: rgba(255, 255, 255, 0.9);
+            color: #667eea;
+            border-color: white;
+        }
+
+        /* Anchor-hash tabs (CSS-only using :target and :has) */
+        .tab-content { display: none; }
+        .tab-content:target { display: block; }
+        /* Default to development when no target present */
+        .container:not(:has(.tab-content:target)) #development { display: block; }
+
+        /* Active tab button styling via :has */
+        .container:not(:has(.tab-content:target)) .strategy-tabs a[href="#development"],
+        .container:has(#development:target) .strategy-tabs a[href="#development"],
+        .container:has(#growth:target) .strategy-tabs a[href="#growth"],
+        .container:has(#leadgen:target) .strategy-tabs a[href="#leadgen"] {
+            background: rgba(255, 255, 255, 0.9);
+            color: #667eea;
+            border-color: white;
+        }
+
+        /* Tabs */
+        
+        .tab-content {
+            display: none;
+        }
+        
+        .tab-content.active {
+            display: block;
+        }
+
+        /* (radio-based CSS removed) */
+        
+        .phase-timeline {
+            display: grid;
+            gap: 30px;
+            margin-bottom: 40px;
+        }
+        
+        .phase-card {
+            background: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 20px;
+            overflow: hidden;
+            transition: all 0.4s ease;
+            position: relative;
+        }
+        
+        .phase-card:hover {
+            background: rgba(255, 255, 255, 0.1);
+            transform: translateY(-5px);
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+        }
+        
+        .phase-header {
+            padding: 25px 30px;
+            background: linear-gradient(135deg, rgba(0, 212, 170, 0.8), rgba(0, 168, 255, 0.8));
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .phase-header::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            right: -20%;
+            width: 150%;
+            height: 200%;
+            background: rgba(255, 255, 255, 0.1);
+            transform: rotate(15deg);
+            transition: all 0.3s ease;
+        }
+        
+        .phase-card:hover .phase-header::before {
+            right: -10%;
+        }
+        
+        .phase-title {
+            font-size: 1.8rem;
+            font-weight: 700;
+            position: relative;
+            z-index: 2;
+            margin-bottom: 5px;
+        }
+        
+        .phase-duration {
+            font-size: 1rem;
+            opacity: 0.9;
+            position: relative;
+            z-index: 2;
+        }
+        
+        .phase-metric {
+            position: absolute;
+            top: 20px;
+            right: 30px;
+            background: rgba(255, 255, 255, 0.2);
+            padding: 8px 16px;
+            border-radius: 20px;
+            font-weight: 700;
+            font-size: 0.9rem;
+            z-index: 2;
+        }
+        
+        .phase-content {
+            padding: 30px;
+        }
+        
+        .development-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+            margin-bottom: 25px;
+        }
+        
+        .dev-item {
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 12px;
+            padding: 20px;
+            transition: all 0.3s ease;
+        }
+        
+        .dev-item:hover {
+            background: rgba(255, 255, 255, 0.08);
+            border-color: rgba(0, 212, 170, 0.5);
+        }
+        
+        .dev-title {
+            font-size: 1.1rem;
+            font-weight: 600;
+            color: #00d4aa;
+            margin-bottom: 8px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        
+        .dev-desc {
+            color: rgba(255, 255, 255, 0.8);
+            font-size: 0.9rem;
+            line-height: 1.5;
+        }
+        
+        .growth-metrics {
+            background: rgba(0, 212, 170, 0.1);
+            border: 1px solid rgba(0, 212, 170, 0.3);
+            border-radius: 12px;
+            padding: 20px;
+            margin-top: 20px;
+        }
+        
+        .metrics-title {
+            color: #00d4aa;
+            font-weight: 600;
+            margin-bottom: 15px;
+            font-size: 1.1rem;
+        }
+        
+        .metrics-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+            gap: 15px;
+        }
+        
+        .metric {
+            text-align: center;
+            background: rgba(255, 255, 255, 0.05);
+            padding: 15px;
+            border-radius: 8px;
+        }
+        
+        .metric-number {
+            font-size: 1.8rem;
+            font-weight: 700;
+            color: #00d4aa;
+            display: block;
+        }
+        
+        .metric-label {
+            font-size: 0.8rem;
+            color: rgba(255, 255, 255, 0.7);
+            margin-top: 5px;
+        }
+        
+        .lead-generation-flow {
+            background: rgba(255, 255, 255, 0.03);
+            border-radius: 16px;
+            padding: 30px;
+            margin-bottom: 30px;
+        }
+        
+        .flow-title {
+            text-align: center;
+            font-size: 2rem;
+            font-weight: 700;
+            color: #ffd700;
+            margin-bottom: 30px;
+        }
+        
+        .flow-steps {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+        }
+        
+        .flow-step {
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 12px;
+            padding: 25px;
+            text-align: center;
+            position: relative;
+            transition: all 0.3s ease;
+        }
+        
+        .flow-step:hover {
+            background: rgba(255, 255, 255, 0.08);
+            transform: translateY(-3px);
+        }
+        
+        .flow-step::before {
+            content: attr(data-step);
+            position: absolute;
+            top: -10px;
+            left: 20px;
+            background: #ffd700;
+            color: #333;
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 700;
+            font-size: 0.9rem;
+        }
+        
+        .step-title {
+            font-size: 1.2rem;
+            font-weight: 600;
+            margin-bottom: 10px;
+            color: #ffd700;
+        }
+        
+        .step-desc {
+            color: rgba(255, 255, 255, 0.8);
+            font-size: 0.9rem;
+            line-height: 1.4;
+        }
+        
+        .conversion-funnel {
+            background: linear-gradient(135deg, rgba(255, 107, 107, 0.1), rgba(255, 165, 0, 0.1));
+            border: 1px solid rgba(255, 165, 0, 0.3);
+            border-radius: 16px;
+            padding: 30px;
+            margin-top: 30px;
+        }
+        
+        .funnel-title {
+            color: #ffa500;
+            font-size: 1.5rem;
+            font-weight: 700;
+            margin-bottom: 20px;
+            text-align: center;
+        }
+        
+        .funnel-stages {
+            display: grid;
+            gap: 15px;
+        }
+        
+        .funnel-stage {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+            background: rgba(255, 255, 255, 0.05);
+            padding: 15px 20px;
+            border-radius: 10px;
+            border-left: 4px solid #ffa500;
+        }
+        
+        .stage-metric {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: #ffa500;
+            min-width: 80px;
+        }
+        
+        .stage-desc {
+            color: rgba(255, 255, 255, 0.9);
+            font-size: 0.9rem;
+        }
+        
+        .competitive-advantage {
+            background: rgba(255, 255, 255, 0.03);
+            border-radius: 16px;
+            padding: 30px;
+            margin-top: 40px;
+            text-align: center;
+        }
+        
+        .advantage-title {
+            color: #00d4aa;
+            font-size: 1.8rem;
+            font-weight: 700;
+            margin-bottom: 20px;
+        }
+        
+        .advantage-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+            margin-top: 20px;
+        }
+        
+        .advantage-item {
+            background: rgba(0, 212, 170, 0.1);
+            border: 1px solid rgba(0, 212, 170, 0.2);
+            border-radius: 12px;
+            padding: 20px;
+            transition: all 0.3s ease;
+        }
+        
+        .advantage-item:hover {
+            background: rgba(0, 212, 170, 0.15);
+            transform: translateY(-2px);
+        }
+        
+        .advantage-icon {
+            font-size: 2.5rem;
+            margin-bottom: 10px;
+            display: block;
+        }
+        
+        .advantage-name {
+            font-size: 1.1rem;
+            font-weight: 600;
+            color: #00d4aa;
+            margin-bottom: 8px;
+        }
+        
+        .advantage-detail {
+            color: rgba(255, 255, 255, 0.8);
+            font-size: 0.85rem;
+            line-height: 1.4;
+        }
+        
+        @media (max-width: 768px) {
+            .header h1 {
+                font-size: 2.5rem;
+            }
+            
+            .development-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .flow-steps {
+                grid-template-columns: 1fr;
+            }
+            
+            .phase-metric {
+                position: static;
+                margin-top: 10px;
+                display: inline-block;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>🚀 App Development & Growth Strategy</h1>
+            <p>Building the data flywheel from day one</p>
+        </div>
+        
+        <div class="strategy-tabs">
+            <a class="tab-btn" href="#development">App Development</a>
+            <a class="tab-btn" href="#growth">User Growth</a>
+            <a class="tab-btn" href="#leadgen">Lead Generation</a>
+        </div>
+        
+        <!-- DEVELOPMENT TAB -->
+        <div id="development" class="tab-content">
+            <div class="phase-timeline">
+                <!-- Week 1: MVP -->
+                <div class="phase-card">
+                    <div class="phase-header">
+                        <div class="phase-title">Week 1: Functional MVP</div>
+                        <div class="phase-duration">Days 1-7</div>
+                        <div class="phase-metric">12 Hours</div>
+                    </div>
+                    <div class="phase-content">
+                        <div class="development-grid">
+                            <div class="dev-item">
+                                <div class="dev-title">🎯 Core Chat Interface</div>
+                                <div class="dev-desc">Clean, mobile-first chat with OpenAI streaming responses. Focus on conversation quality.</div>
+                            </div>
+                            <div class="dev-item">
+                                <div class="dev-title">📝 Intake Form</div>
+                                <div class="dev-desc">Minimal friction: location, budget, timeline, property type. Data collection starts immediately.</div>
+                            </div>
+                            <div class="dev-item">
+                                <div class="dev-title">🧠 Basic RAG</div>
+                                <div class="dev-desc">Kansas City real estate knowledge base with simple vector search and context injection.</div>
+                            </div>
+                            <div class="dev-item">
+                                <div class="dev-title">📊 Analytics Foundation</div>
+                                <div class="dev-desc">Track every interaction: questions asked, conversation length, satisfaction ratings.</div>
+                            </div>
+                        </div>
+                        
+                        <div class="growth-metrics">
+                            <div class="metrics-title">Week 1 Success Metrics</div>
+                            <div class="metrics-grid">
+                                <div class="metric">
+                                    <span class="metric-number">50</span>
+                                    <div class="metric-label">Beta Users</div>
+                                </div>
+                                <div class="metric">
+                                    <span class="metric-number">5+</span>
+                                    <div class="metric-label">Avg Messages</div>
+                                </div>
+                                <div class="metric">
+                                    <span class="metric-number">60%</span>
+                                    <div class="metric-label">Complete Sessions</div>
+                                </div>
+                                <div class="metric">
+                                    <span class="metric-number">100%</span>
+                                    <div class="metric-label">Data Capture</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Week 2-4: Agent Portal -->
+                <div class="phase-card">
+                    <div class="phase-header">
+                        <div class="phase-title">Weeks 2-4: Agent Integration</div>
+                        <div class="phase-duration">Days 8-28</div>
+                        <div class="phase-metric">30 Hours</div>
+                    </div>
+                    <div class="phase-content">
+                        <div class="development-grid">
+                            <div class="dev-item">
+                                <div class="dev-title">👤 Agent Dashboard</div>
+                                <div class="dev-desc">Simple portal for agents to see leads, track conversations, and measure ROI.</div>
+                            </div>
+                            <div class="dev-item">
+                                <div class="dev-title">💳 Payment System</div>
+                                <div class="dev-desc">Stripe integration for $99/month subscriptions. Start revenue immediately.</div>
+                            </div>
+                            <div class="dev-item">
+                                <div class="dev-title">🔗 Lead Routing</div>
+                                <div class="dev-desc">Qualified leads automatically sent to subscribed agents with contact preferences.</div>
+                            </div>
+                            <div class="dev-item">
+                                <div class="dev-title">📈 Performance Tracking</div>
+                                <div class="dev-desc">Track which conversations convert to agent meetings and eventual closings.</div>
+                            </div>
+                        </div>
+                        
+                        <div class="growth-metrics">
+                            <div class="metrics-title">Month 1 Success Metrics</div>
+                            <div class="metrics-grid">
+                                <div class="metric">
+                                    <span class="metric-number">10</span>
+                                    <div class="metric-label">Paying Agents</div>
+                                </div>
+                                <div class="metric">
+                                    <span class="metric-number">100</span>
+                                    <div class="metric-label">Qualified Leads</div>
+                                </div>
+                                <div class="metric">
+                                    <span class="metric-number">$1K</span>
+                                    <div class="metric-label">Monthly Revenue</div>
+                                </div>
+                                <div class="metric">
+                                    <span class="metric-number">30%</span>
+                                    <div class="metric-label">Lead-to-Meeting</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Month 2-3: Data Intelligence -->
+                <div class="phase-card">
+                    <div class="phase-header">
+                        <div class="phase-title">Months 2-3: Data Intelligence</div>
+                        <div class="phase-duration">Days 29-90</div>
+                        <div class="phase-metric">60 Hours</div>
+                    </div>
+                    <div class="phase-content">
+                        <div class="development-grid">
+                            <div class="dev-item">
+                                <div class="dev-title">🤖 Conversation Analysis</div>
+                                <div class="dev-desc">ML models to identify successful conversation patterns and optimize prompts.</div>
+                            </div>
+                            <div class="dev-item">
+                                <div class="dev-title">🎯 Lead Scoring</div>
+                                <div class="dev-desc">Behavioral signals that predict conversion. Prioritize high-value leads for agents.</div>
+                            </div>
+                            <div class="dev-item">
+                                <div class="dev-title">📍 Local Intelligence</div>
+                                <div class="dev-desc">Neighborhood-specific insights based on actual user conversations and outcomes.</div>
+                            </div>
+                            <div class="dev-item">
+                                <div class="dev-title">🔄 Feedback Loop</div>
+                                <div class="dev-desc">Agents report closure outcomes, feeding back into conversation optimization.</div>
+                            </div>
+                        </div>
+                        
+                        <div class="growth-metrics">
+                            <div class="metrics-title">Month 3 Success Metrics</div>
+                            <div class="metrics-grid">
+                                <div class="metric">
+                                    <span class="metric-number">25</span>
+                                    <div class="metric-label">Paying Agents</div>
+                                </div>
+                                <div class="metric">
+                                    <span class="metric-number">500</span>
+                                    <div class="metric-label">Monthly Leads</div>
+                                </div>
+                                <div class="metric">
+                                    <span class="metric-number">$3K</span>
+                                    <div class="metric-label">Monthly Revenue</div>
+                                </div>
+                                <div class="metric">
+                                    <span class="metric-number">5</span>
+                                    <div class="metric-label">Documented Closings</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- GROWTH TAB -->
+        <div id="growth" class="tab-content">
+            <div class="lead-generation-flow">
+                <div class="flow-title">🎯 Consumer Growth Strategy</div>
+                <div class="flow-steps">
+                    <div class="flow-step" data-step="1">
+                        <div class="step-title">Content Marketing</div>
+                        <div class="step-desc">Local KC real estate blog posts, neighborhood guides, market updates. SEO for "Kansas City real estate advice"</div>
+                    </div>
+                    
+                    <div class="flow-step" data-step="2">
+                        <div class="step-title">Social Media</div>
+                        <div class="step-desc">LinkedIn for agents, Facebook groups for homebuyers, Instagram for neighborhood highlights</div>
+                    </div>
+                    
+                    <div class="flow-step" data-step="3">
+                        <div class="step-title">Direct Outreach</div>
+                        <div class="step-desc">Personal network, real estate meetups, new homeowner lists, apartment complex partnerships</div>
+                    </div>
+                    
+                    <div class="flow-step" data-step="4">
+                        <div class="step-title">Referral Program</div>
+                        <div class="step-desc">Users get premium features for referring friends. Agents get discounts for successful referrals</div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="conversion-funnel">
+                <div class="funnel-title">📈 Growth Funnel Optimization</div>
+                <div class="funnel-stages">
+                    <div class="funnel-stage">
+                        <div class="stage-metric">1000</div>
+                        <div class="stage-desc"><strong>Monthly Visitors</strong> - From content marketing, social media, and referrals</div>
+                    </div>
+                    <div class="funnel-stage">
+                        <div class="stage-metric">200</div>
+                        <div class="stage-desc"><strong>Start Conversation</strong> - 20% conversion from landing page to chat</div>
+                    </div>
+                    <div class="funnel-stage">
+                        <div class="stage-metric">120</div>
+                        <div class="stage-desc"><strong>Complete Session</strong> - 60% finish full conversation and provide contact info</div>
+                    </div>
+                    <div class="funnel-stage">
+                        <div class="stage-metric">60</div>
+                        <div class="stage-desc"><strong>Qualified Leads</strong> - 50% meet agent criteria (budget, timeline, location)</div>
+                    </div>
+                    <div class="funnel-stage">
+                        <div class="stage-metric">18</div>
+                        <div class="stage-desc"><strong>Agent Meetings</strong> - 30% of qualified leads convert to in-person meetings</div>
+                    </div>
+                    <div class="funnel-stage">
+                        <div class="stage-metric">3</div>
+                        <div class="stage-desc"><strong>Closings</strong> - 15% of meetings result in successful transactions</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- LEAD GENERATION TAB -->
+        <div id="leadgen" class="tab-content">
+            <div class="lead-generation-flow">
+                <div class="flow-title">🔥 Agent Lead Generation Process</div>
+                <div class="flow-steps">
+                    <div class="flow-step" data-step="1">
+                        <div class="step-title">Consumer Interaction</div>
+                        <div class="step-desc">User chats with AI assistant about buying/selling. Every conversation tracked and analyzed for intent signals.</div>
+                    </div>
+                    
+                    <div class="flow-step" data-step="2">
+                        <div class="step-title">Qualification Scoring</div>
+                        <div class="step-desc">AI analyzes: budget mentioned, timeline urgency, location specificity, engagement level, follow-up questions.</div>
+                    </div>
+                    
+                    <div class="flow-step" data-step="3">
+                        <div class="step-title">Lead Routing</div>
+                        <div class="step-desc">Qualified leads (score 7+/10) automatically sent to subscribed agents in that area with full conversation context.</div>
+                    </div>
+                    
+                    <div class="flow-step" data-step="4">
+                        <div class="step-title">Agent Follow-up</div>
+                        <div class="step-desc">Agent contacts lead within 2 hours with personalized message based on chat history. Higher conversion than cold calls.</div>
+                    </div>
+                    
+                    <div class="flow-step" data-step="5">
+                        <div class="step-title">Outcome Tracking</div>
+                        <div class="step-desc">Agent reports back: meeting scheduled, under contract, closed deal. Data feeds back into qualification model.</div>
+                    </div>
+                    
+                    <div class="flow-step" data-step="6">
+                        <div class="step-title">Model Improvement</div>
+                        <div class="step-desc">Successful patterns identified and applied. Failed leads analyzed to improve qualification accuracy.</div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="conversion-funnel">
+                <div class="funnel-title">💰 Agent Revenue Model</div>
+                <div class="funnel-stages">
+                    <div class="funnel-stage">
+                        <div class="stage-metric">$99</div>
+                        <div class="stage-desc"><strong>Monthly Subscription</strong> - Basic tier gets 10-15 qualified leads per month</div>
+                    </div>
+                    <div class="funnel-stage">
+                        <div class="stage-metric">$199</div>
+                        <div class="stage-desc"><strong>Premium Tier</strong> - 25-30 leads + priority routing + advanced analytics</div>
+                    </div>
+                    <div class="funnel-stage">
+                        <div class="stage-metric">$299</div>
+                        <div class="stage-desc"><strong>Exclusive Territory</strong> - Only agent in specific zip codes + co-marketing</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="competitive-advantage">
+            <div class="advantage-title">🎯 Why This Lead Gen Model Wins</div>
+            <div class="advantage-grid">
+                <div class="advantage-item">
+                    <span class="advantage-icon">🎪</span>
+                    <div class="advantage-name">Warm Leads</div>
+                    <div class="advantage-detail">Consumers already engaged and educated before agent contact. Higher conversion than cold leads.</div>
+                </div>
+                
+                <div class="advantage-item">
+                    <span class="advantage-icon">🧠</span>
+                    <div class="advantage-name">Context Rich</div>
+                    <div class="advantage-detail">Agents get full conversation history, budget, timeline, concerns. Perfect personalization.</div>
+                </div>
+                
+                <div class="advantage-item">
+                    <span class="advantage-icon">⚡</span>
+                    <div class="advantage-name">Speed Advantage</div>
+                    <div class="advantage-detail">Real-time lead delivery. Agent contacts within hours, not days like traditional lead gen.</div>
+                </div>
+                
+                <div class="advantage-item">
+                    <span class="advantage-icon">📈</span>
+                    <div class="advantage-name">Data Flywheel</div>
+                    <div class="advantage-detail">More interactions → better qualification → higher conversion → more agents want in.</div>
+                </div>
+                
+                <div class="advantage-item">
+                    <span class="advantage-icon">💰</span>
+                    <div class="advantage-name">Predictable Revenue</div>
+                    <div class="advantage-detail">Subscription model vs. per-lead pricing. Agents budget monthly, you get recurring revenue.</div>
+                </div>
+                
+                <div class="advantage-item">
+                    <span class="advantage-icon">🏠</span>
+                    <div class="advantage-name">Local Focus</div>
+                    <div class="advantage-detail">Deep Kansas City knowledge creates better matches and higher satisfaction for all parties.</div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script>
+      (function() {
+        function setHashWithoutScroll(hash) {
+          var x = window.scrollX || window.pageXOffset;
+          var y = window.scrollY || window.pageYOffset;
+          // Update the hash so :target CSS updates, then immediately restore scroll
+          if (hash && location.hash !== hash) {
+            location.hash = hash;
+          } else if (hash) {
+            // Force :target refresh by temporarily clearing and resetting the hash
+            var tmp = hash + "-tmp";
+            location.hash = tmp;
+            location.hash = hash;
+          }
+          // Restore scroll after the hash change
+          requestAnimationFrame(function() { window.scrollTo(x, y); });
+        }
+        function bindNoScrollTabLinks() {
+          var links = document.querySelectorAll('.strategy-tabs a.tab-btn[href^="#"]');
+          for (var i = 0; i < links.length; i++) {
+            links[i].addEventListener('click', function(e) {
+              e.preventDefault();
+              var hash = this.getAttribute('href');
+              if (!hash) return;
+              setHashWithoutScroll(hash);
+            });
+          }
+        }
+        if (document.readyState === 'loading') {
+          document.addEventListener('DOMContentLoaded', bindNoScrollTabLinks);
+        } else {
+          bindNoScrollTabLinks();
+        }
+      })();
+    </script>
+  </body>
+</html>

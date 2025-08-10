@@ -1,0 +1,783 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>HomeWise AI - Your Personal Real Estate Guide</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            overflow-x: hidden;
+        }
+        
+        /* Hero Section */
+        .hero {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .hero::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 1000"><polygon fill="rgba(255,255,255,0.05)" points="0,1000 1000,0 1000,1000"/></svg>');
+            pointer-events: none;
+        }
+        
+        .hero-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 60px;
+            align-items: center;
+            position: relative;
+            z-index: 1;
+        }
+        
+        .hero-content {
+            color: white;
+        }
+        
+        .hero-badge {
+            display: inline-flex;
+            align-items: center;
+            background: rgba(255, 255, 255, 0.2);
+            backdrop-filter: blur(10px);
+            padding: 8px 16px;
+            border-radius: 25px;
+            font-size: 0.9rem;
+            font-weight: 500;
+            margin-bottom: 20px;
+            border: 1px solid rgba(255, 255, 255, 0.3);
+        }
+        
+        .hero-badge .badge-icon {
+            width: 16px;
+            height: 16px;
+            background: #00d4aa;
+            border-radius: 50%;
+            margin-right: 8px;
+            animation: pulse 2s infinite;
+        }
+        
+        @keyframes pulse {
+            0%, 100% { opacity: 1; transform: scale(1); }
+            50% { opacity: 0.7; transform: scale(1.1); }
+        }
+        
+        .hero-title {
+            font-size: 3.5rem;
+            font-weight: 900;
+            line-height: 1.1;
+            margin-bottom: 20px;
+            background: linear-gradient(135deg, #fff, #f0f9ff);
+            background-clip: text;
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            text-shadow: 0 0 30px rgba(255,255,255,0.3);
+        }
+        
+        .hero-subtitle {
+            font-size: 1.3rem;
+            opacity: 0.9;
+            margin-bottom: 30px;
+            line-height: 1.5;
+        }
+        
+        .hero-cta-section {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(20px);
+            border-radius: 20px;
+            padding: 40px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.2);
+            border: 1px solid rgba(255, 255, 255, 0.3);
+        }
+        
+        .cta-title {
+            color: #333;
+            font-size: 1.5rem;
+            font-weight: 700;
+            text-align: center;
+            margin-bottom: 25px;
+        }
+        
+        .cta-buttons {
+            display: flex;
+            gap: 15px;
+            margin-bottom: 30px;
+        }
+        
+        .cta-button {
+            flex: 1;
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            color: white;
+            border: none;
+            padding: 20px 30px;
+            border-radius: 15px;
+            font-size: 1.1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+            text-align: center;
+            text-decoration: none;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 8px;
+        }
+        
+        .cta-button::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
+            transition: left 0.5s ease;
+        }
+        
+        .cta-button:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 10px 30px rgba(102, 126, 234, 0.4);
+        }
+        
+        .cta-button:hover::before {
+            left: 100%;
+        }
+        
+        .button-icon {
+            font-size: 2rem;
+        }
+        
+        .button-text {
+            font-size: 1.1rem;
+            font-weight: 600;
+        }
+        
+        .button-subtext {
+            font-size: 0.85rem;
+            opacity: 0.9;
+        }
+        
+        .or-divider {
+            text-align: center;
+            color: #666;
+            margin: 20px 0;
+            position: relative;
+        }
+        
+        .or-divider::before {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 0;
+            right: 0;
+            height: 1px;
+            background: #ddd;
+            z-index: 1;
+        }
+        
+        .or-divider span {
+            background: rgba(255, 255, 255, 0.95);
+            padding: 0 15px;
+            position: relative;
+            z-index: 2;
+        }
+        
+        .agent-link {
+            text-align: center;
+        }
+        
+        .agent-link a {
+            color: #667eea;
+            text-decoration: none;
+            font-weight: 500;
+            font-size: 0.95rem;
+            transition: all 0.3s ease;
+        }
+        
+        .agent-link a:hover {
+            color: #764ba2;
+            text-decoration: underline;
+        }
+        
+        /* Features Section */
+        .features {
+            padding: 80px 0;
+            background: #f8fafc;
+        }
+        
+        .features-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+        
+        .features-header {
+            text-align: center;
+            margin-bottom: 60px;
+        }
+        
+        .features-title {
+            font-size: 2.5rem;
+            font-weight: 800;
+            color: #1e293b;
+            margin-bottom: 15px;
+        }
+        
+        .features-subtitle {
+            font-size: 1.2rem;
+            color: #64748b;
+            max-width: 600px;
+            margin: 0 auto;
+        }
+        
+        .features-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 30px;
+        }
+        
+        .feature-card {
+            background: white;
+            border-radius: 16px;
+            padding: 30px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+            transition: all 0.3s ease;
+            border: 1px solid #e2e8f0;
+        }
+        
+        .feature-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 40px rgba(0, 0, 0, 0.12);
+        }
+        
+        .feature-icon {
+            width: 60px;
+            height: 60px;
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.8rem;
+            margin-bottom: 20px;
+        }
+        
+        .feature-title {
+            font-size: 1.3rem;
+            font-weight: 700;
+            color: #1e293b;
+            margin-bottom: 10px;
+        }
+        
+        .feature-description {
+            color: #64748b;
+            line-height: 1.6;
+        }
+        
+        /* Social Proof */
+        .social-proof {
+            background: linear-gradient(135deg, #1e293b, #334155);
+            color: white;
+            padding: 60px 0;
+        }
+        
+        .social-proof-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+            text-align: center;
+        }
+        
+        .proof-stats {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 40px;
+            margin-top: 40px;
+        }
+        
+        .stat-item {
+            text-align: center;
+        }
+        
+        .stat-number {
+            font-size: 3rem;
+            font-weight: 900;
+            color: #00d4aa;
+            display: block;
+            margin-bottom: 10px;
+        }
+        
+        .stat-label {
+            font-size: 1.1rem;
+            opacity: 0.9;
+        }
+        
+        /* Footer */
+        .footer {
+            background: #0f172a;
+            color: white;
+            padding: 40px 0;
+            text-align: center;
+        }
+        
+        .footer-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+        
+        .footer-logo {
+            font-size: 1.5rem;
+            font-weight: 700;
+            margin-bottom: 20px;
+            color: #00d4aa;
+        }
+        
+        .footer-text {
+            opacity: 0.7;
+            margin-bottom: 20px;
+        }
+        
+        .footer-links {
+            display: flex;
+            justify-content: center;
+            gap: 30px;
+            margin-bottom: 20px;
+        }
+        
+        .footer-links a {
+            color: rgba(255, 255, 255, 0.7);
+            text-decoration: none;
+            transition: color 0.3s ease;
+        }
+        
+        .footer-links a:hover {
+            color: #00d4aa;
+        }
+        
+        /* Mobile Responsiveness */
+        @media (max-width: 768px) {
+            .hero-container {
+                grid-template-columns: 1fr;
+                gap: 40px;
+                text-align: center;
+            }
+            
+            .hero-title {
+                font-size: 2.5rem;
+            }
+            
+            .hero-subtitle {
+                font-size: 1.1rem;
+            }
+            
+            .cta-buttons {
+                flex-direction: column;
+            }
+            
+            .features-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .proof-stats {
+                grid-template-columns: repeat(2, 1fr);
+                gap: 20px;
+            }
+            
+            .footer-links {
+                flex-direction: column;
+                gap: 15px;
+            }
+        }
+        
+        /* Floating Elements Animation */
+        .floating {
+            animation: float 3s ease-in-out infinite;
+        }
+        
+        .floating:nth-child(odd) {
+            animation-delay: -1s;
+        }
+        
+        @keyframes float {
+            0%, 100% { transform: translateY(0px); }
+            50% { transform: translateY(-10px); }
+        }
+        
+        /* Chat Preview */
+        .chat-preview {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(20px);
+            border-radius: 20px;
+            padding: 20px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.1);
+            max-width: 400px;
+            position: relative;
+        }
+        
+        .chat-header {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding-bottom: 15px;
+            border-bottom: 1px solid #e2e8f0;
+            margin-bottom: 15px;
+        }
+        
+        .chat-avatar {
+            width: 40px;
+            height: 40px;
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: 600;
+        }
+        
+        .chat-info h4 {
+            color: #1e293b;
+            font-size: 1rem;
+            margin: 0;
+        }
+        
+        .chat-info p {
+            color: #64748b;
+            font-size: 0.85rem;
+            margin: 0;
+        }
+        
+        .chat-messages {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+        
+        .message {
+            max-width: 80%;
+            padding: 12px 16px;
+            border-radius: 18px;
+            font-size: 0.9rem;
+            line-height: 1.4;
+        }
+        
+        .message.ai {
+            background: #f1f5f9;
+            color: #334155;
+            align-self: flex-start;
+        }
+        
+        .message.user {
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            color: white;
+            align-self: flex-end;
+        }
+        
+        .typing-indicator {
+            display: flex;
+            align-items: center;
+            gap: 5px;
+            padding: 12px 16px;
+            background: #f1f5f9;
+            border-radius: 18px;
+            max-width: 80px;
+            margin-top: 8px;
+        }
+        
+        .typing-dot {
+            width: 6px;
+            height: 6px;
+            background: #94a3b8;
+            border-radius: 50%;
+            animation: typing 1.5s infinite;
+        }
+        
+        .typing-dot:nth-child(2) { animation-delay: 0.2s; }
+        .typing-dot:nth-child(3) { animation-delay: 0.4s; }
+        
+        @keyframes typing {
+            0%, 60%, 100% { transform: translateY(0); opacity: 0.4; }
+            30% { transform: translateY(-8px); opacity: 1; }
+        }
+    </style>
+</head>
+<body>
+    <!-- Hero Section -->
+    <section class="hero">
+        <div class="hero-container">
+            <div class="hero-content">
+                <div class="hero-badge">
+                    <div class="badge-icon"></div>
+                    AI-Powered Real Estate Guidance
+                </div>
+                
+                <h1 class="hero-title">Get personalized advice for your Kansas City real estate journey</h1>
+                
+                <p class="hero-subtitle">
+                    Skip the confusion. Get instant, localized guidance whether you're buying your first home or selling for top dollar. Our AI assistant knows Kansas City like a local expert.
+                </p>
+            </div>
+            
+            <div class="hero-cta-section floating">
+                <h2 class="cta-title">What brings you here today?</h2>
+                
+                <div class="cta-buttons">
+                    <a href="#" class="cta-button" id="buyingBtn">
+                        <div class="button-icon">🏡</div>
+                        <div class="button-text">I'm Buying</div>
+                        <div class="button-subtext">Find your dream home</div>
+                    </a>
+                    
+                    <a href="#" class="cta-button" id="sellingBtn">
+                        <div class="button-icon">💰</div>
+                        <div class="button-text">I'm Selling</div>
+                        <div class="button-subtext">Maximize your value</div>
+                    </a>
+                </div>
+                
+                <div class="or-divider">
+                    <span>or</span>
+                </div>
+                
+                <div class="agent-link">
+                    <a href="#agent">Are you a real estate agent? Learn how we can help →</a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Features Section -->
+    <section class="features">
+        <div class="features-container">
+            <div class="features-header">
+                <h2 class="features-title">Why HomeWise AI?</h2>
+                <p class="features-subtitle">
+                    Get the local expertise you need, personalized to your specific situation, available 24/7
+                </p>
+            </div>
+            
+            <div class="features-grid">
+                <div class="feature-card floating">
+                    <div class="feature-icon">🎯</div>
+                    <h3 class="feature-title">Hyper-Local Knowledge</h3>
+                    <p class="feature-description">
+                        Deep insights into Kansas City neighborhoods, schools, market trends, and hidden gems that only locals know about.
+                    </p>
+                </div>
+                
+                <div class="feature-card floating">
+                    <div class="feature-icon">💬</div>
+                    <h3 class="feature-title">Personalized Guidance</h3>
+                    <p class="feature-description">
+                        Tailored advice based on your budget, timeline, and unique situation. No generic answers – just what you need to know.
+                    </p>
+                </div>
+                
+                <div class="feature-card floating">
+                    <div class="feature-icon">⚡</div>
+                    <h3 class="feature-title">Instant Expert Advice</h3>
+                    <p class="feature-description">
+                        Get answers to complex real estate questions in seconds. From financing options to negotiation strategies.
+                    </p>
+                </div>
+                
+                <div class="feature-card floating">
+                    <div class="feature-icon">🔒</div>
+                    <h3 class="feature-title">Completely Free</h3>
+                    <p class="feature-description">
+                        No hidden fees, no obligation. Get the guidance you need to make informed decisions about the biggest purchase of your life.
+                    </p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Social Proof Section -->
+    <section class="social-proof">
+        <div class="social-proof-container">
+            <h2 style="font-size: 2rem; margin-bottom: 15px;">Trusted by Kansas City home buyers and sellers</h2>
+            <p style="opacity: 0.9; font-size: 1.1rem;">Join hundreds of locals who've made smarter real estate decisions</p>
+            
+            <div class="proof-stats">
+                <div class="stat-item">
+                    <span class="stat-number">500+</span>
+                    <div class="stat-label">Conversations Started</div>
+                </div>
+                
+                <div class="stat-item">
+                    <span class="stat-number">50+</span>
+                    <div class="stat-label">Successful Closings</div>
+                </div>
+                
+                <div class="stat-item">
+                    <span class="stat-number">$2.3M</span>
+                    <div class="stat-label">Real Estate Transacted</div>
+                </div>
+                
+                <div class="stat-item">
+                    <span class="stat-number">4.9★</span>
+                    <div class="stat-label">Average Rating</div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="footer-container">
+            <div class="footer-logo">HomeWise AI</div>
+            <p class="footer-text">Making real estate decisions smarter, one conversation at a time.</p>
+            
+            <div class="footer-links">
+                <a href="#privacy">Privacy Policy</a>
+                <a href="#terms">Terms of Service</a>
+                <a href="#contact">Contact Us</a>
+                <a href="#agent" id="agentFooterLink">For Agents</a>
+            </div>
+            
+            <p style="opacity: 0.5; font-size: 0.9rem;">© 2025 HomeWise AI. Made in Kansas City.</p>
+        </div>
+    </footer>
+
+    <!-- Modal for Intake Form (Hidden by default) -->
+    <div id="intakeModal" style="display: none; position: fixed; top: 0; left: 0; right: 0; bottom: 0; background: rgba(0,0,0,0.8); z-index: 1000; align-items: center; justify-content: center;">
+        <div style="background: white; border-radius: 20px; padding: 40px; max-width: 500px; width: 90%; max-height: 80vh; overflow-y: auto;">
+            <h3 style="margin-bottom: 20px; color: #1e293b;">Let's get you started!</h3>
+            
+            <form id="intakeForm">
+                <div style="margin-bottom: 20px;">
+                    <label style="display: block; margin-bottom: 5px; font-weight: 600;">What's your name? (Optional)</label>
+                    <input type="text" style="width: 100%; padding: 12px; border: 2px solid #e2e8f0; border-radius: 8px; font-size: 1rem;">
+                </div>
+                
+                <div style="margin-bottom: 20px;">
+                    <label style="display: block; margin-bottom: 5px; font-weight: 600;">Where are you looking?</label>
+                    <input type="text" placeholder="e.g., Overland Park, Leawood, Downtown KC" style="width: 100%; padding: 12px; border: 2px solid #e2e8f0; border-radius: 8px; font-size: 1rem;" required>
+                </div>
+                
+                <div style="margin-bottom: 20px;">
+                    <label style="display: block; margin-bottom: 5px; font-weight: 600;">What's your budget range?</label>
+                    <select style="width: 100%; padding: 12px; border: 2px solid #e2e8f0; border-radius: 8px; font-size: 1rem;" required>
+                        <option value="">Select budget range</option>
+                        <option value="under-200k">Under $200k</option>
+                        <option value="200k-300k">$200k - $300k</option>
+                        <option value="300k-400k">$300k - $400k</option>
+                        <option value="400k-500k">$400k - $500k</option>
+                        <option value="500k-700k">$500k - $700k</option>
+                        <option value="over-700k">Over $700k</option>
+                    </select>
+                </div>
+                
+                <div style="margin-bottom: 20px;">
+                    <label style="display: block; margin-bottom: 5px; font-weight: 600;">Timeline?</label>
+                    <select style="width: 100%; padding: 12px; border: 2px solid #e2e8f0; border-radius: 8px; font-size: 1rem;" required>
+                        <option value="">Select timeline</option>
+                        <option value="asap">ASAP (0-3 months)</option>
+                        <option value="6months">3-6 months</option>
+                        <option value="year">6-12 months</option>
+                        <option value="exploring">Just exploring</option>
+                    </select>
+                </div>
+                
+                <div style="display: flex; gap: 10px; margin-top: 30px;">
+                    <button type="button" onclick="closeModal()" style="flex: 1; padding: 12px; background: #f1f5f9; border: none; border-radius: 8px; cursor: pointer;">Cancel</button>
+                    <button type="submit" style="flex: 2; padding: 12px; background: linear-gradient(135deg, #667eea, #764ba2); color: white; border: none; border-radius: 8px; cursor: pointer; font-weight: 600;">Start Chatting 🚀</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <script>
+        // Modal functionality
+        function openModal(type) {
+            const modal = document.getElementById('intakeModal');
+            modal.style.display = 'flex';
+            
+            // Update form based on buying or selling
+            const title = modal.querySelector('h3');
+            if (type === 'buying') {
+                title.textContent = "Let's find your perfect home!";
+            } else {
+                title.textContent = "Let's get top dollar for your home!";
+            }
+        }
+        
+        function closeModal() {
+            document.getElementById('intakeModal').style.display = 'none';
+        }
+        
+        // Event listeners
+        document.getElementById('buyingBtn').addEventListener('click', (e) => {
+            e.preventDefault();
+            openModal('buying');
+        });
+        
+        document.getElementById('sellingBtn').addEventListener('click', (e) => {
+            e.preventDefault();
+            openModal('selling');
+        });
+        
+        document.getElementById('intakeForm').addEventListener('submit', (e) => {
+            e.preventDefault();
+            // Here you would normally collect the form data and redirect to chat
+            alert('Great! This would normally take you to the chat interface with your preferences saved.');
+            closeModal();
+        });
+        
+        // Close modal when clicking outside
+        document.getElementById('intakeModal').addEventListener('click', (e) => {
+            if (e.target.id === 'intakeModal') {
+                closeModal();
+            }
+        });
+        
+        // Smooth scrolling for anchor links
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    target.scrollIntoView({
+                        behavior: 'smooth',
+                        block: 'start'
+                    });
+                }
+            });
+        });
+        
+        // Add some interaction animations
+        document.querySelectorAll('.cta-button').forEach(button => {
+            button.addEventListener('mouseenter', () => {
+                button.style.transform = 'translateY(-3px) scale(1.02)';
+            });
+            
+            button.addEventListener('mouseleave', () => {
+                button.style.transform = 'translateY(0) scale(1)';
+            });
+        });
+    </script>
+</body>
+</html>
