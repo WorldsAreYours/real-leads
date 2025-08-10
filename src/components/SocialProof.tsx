@@ -6,7 +6,7 @@ export default function SocialProof(): JSX.Element {
           Trusted by Kansas City home buyers and sellers
         </h2>
         <p style={{ opacity: 0.9, fontSize: "1.1rem" }}>
-          Join hundreds of locals who've made smarter real estate decisions
+          Join hundreds of locals who&apos;ve made smarter real estate decisions
         </p>
 
         <div className="proof-stats">

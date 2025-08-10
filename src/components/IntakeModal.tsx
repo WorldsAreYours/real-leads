@@ -33,10 +33,10 @@ export default function IntakeModal({
 
   const titleText =
     type === "buying"
-      ? "Let's find your perfect home!"
+      ? "Let&apos;s find your perfect home!"
       : type === "selling"
-      ? "Let's get top dollar for your home!"
-      : "Let's get you started!";
+      ? "Let&apos;s get top dollar for your home!"
+      : "Let&apos;s get you started!";
 
   return (
     <div
@@ -74,7 +74,7 @@ export default function IntakeModal({
             <label
               style={{ display: "block", marginBottom: 5, fontWeight: 600 }}
             >
-              What's your name? (Optional)
+              What&apos;s your name? (Optional)
             </label>
             <input
               type="text"
@@ -112,7 +112,7 @@ export default function IntakeModal({
             <label
               style={{ display: "block", marginBottom: 5, fontWeight: 600 }}
             >
-              What's your budget range?
+              What&apos;s your budget range?
             </label>
             <select
               required

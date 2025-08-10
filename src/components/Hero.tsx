@@ -33,7 +33,7 @@ export default function Hero(): JSX.Element {
           </h1>
 
           <p className="hero-subtitle">
-            Skip the confusion. Get instant, localized guidance whether you're
+            Skip the confusion. Get instant, localized guidance whether you&apos;re
             buying your first home or selling for top dollar. Our AI assistant
             knows Kansas City like a local expert.
           </p>
@@ -49,7 +49,7 @@ export default function Hero(): JSX.Element {
               onClick={() => openModal("buying")}
             >
               <div className="button-icon">🏡</div>
-              <div className="button-text">I'm Buying</div>
+              <div className="button-text">I&apos;m Buying</div>
               <div className="button-subtext">Find your dream home</div>
             </button>
 
@@ -59,7 +59,7 @@ export default function Hero(): JSX.Element {
               onClick={() => openModal("selling")}
             >
               <div className="button-icon">💰</div>
-              <div className="button-text">I'm Selling</div>
+              <div className="button-text">I&apos;m Selling</div>
               <div className="button-subtext">Maximize your value</div>
             </button>
           </div>
