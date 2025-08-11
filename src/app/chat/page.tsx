@@ -1,12 +1,14 @@
 import Chatbot from "@/components/chat/Chatbot";
 
-export default function ChatPage({
+export default async function ChatPage({
   searchParams,
 }: {
-  searchParams: { [key: string]: string | string[] | undefined };
+  searchParams: Promise<{ [key: string]: string | string[] | undefined }>;
 }) {
+  const params = await searchParams;
+
   const get = (key: string): string => {
-    const v = searchParams[key];
+    const v = params[key];
     return typeof v === "string" ? v : "";
   };
 
