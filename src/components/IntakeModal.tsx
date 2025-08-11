@@ -12,7 +12,7 @@ export default function IntakeModal({
   isOpen: boolean;
   type: ModalType;
   onClose: () => void;
-}): JSX.Element | null {
+}) {
   const overlayRef = useRef<HTMLDivElement | null>(null);
 
   if (!isOpen) return null;
