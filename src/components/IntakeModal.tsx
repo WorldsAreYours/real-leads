@@ -1,6 +1,7 @@
 "use client";
 
 import { useRef } from "react";
+import { useRouter } from "next/navigation";
 
 type ModalType = "buying" | "selling" | null;
 
@@ -14,6 +15,7 @@ export default function IntakeModal({
   onClose: () => void;
 }) {
   const overlayRef = useRef<HTMLDivElement | null>(null);
+  const router = useRouter();
 
   if (!isOpen) return null;
 
@@ -25,9 +27,21 @@ export default function IntakeModal({
 
   function handleSubmit(e: React.FormEvent<HTMLFormElement>): void {
     e.preventDefault();
-    alert(
-      "Great! This would normally take you to the chat interface with your preferences saved."
-    );
+    const form = e.currentTarget;
+    const data = new FormData(form);
+    const name = (data.get("name") as string) || "";
+    const location = (data.get("location") as string) || "";
+    const budget = (data.get("budget") as string) || "";
+    const timeline = (data.get("timeline") as string) || "";
+
+    const params = new URLSearchParams();
+    if (type) params.set("type", type);
+    if (name) params.set("name", name);
+    if (location) params.set("location", location);
+    if (budget) params.set("budget", budget);
+    if (timeline) params.set("timeline", timeline);
+
+    router.push(`/chat?${params.toString()}`);
     onClose();
   }
 
@@ -77,6 +91,7 @@ export default function IntakeModal({
               What&apos;s your name? (Optional)
             </label>
             <input
+              name="name"
               type="text"
               style={{
                 width: "100%",
@@ -95,6 +110,7 @@ export default function IntakeModal({
               Where are you looking?
             </label>
             <input
+              name="location"
               type="text"
               placeholder="e.g., Overland Park, Leawood, Downtown KC"
               required
@@ -115,6 +131,7 @@ export default function IntakeModal({
               What&apos;s your budget range?
             </label>
             <select
+              name="budget"
               required
               style={{
                 width: "100%",
@@ -141,6 +158,7 @@ export default function IntakeModal({
               Timeline?
             </label>
             <select
+              name="timeline"
               required
               style={{
                 width: "100%",
