@@ -1,4 +1,4 @@
-export default function SocialProof(): JSX.Element {
+export default function SocialProof() {
   return (
     <section className="social-proof">
       <div className="social-proof-container">

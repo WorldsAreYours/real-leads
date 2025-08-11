@@ -1,4 +1,4 @@
-export default function Features(): JSX.Element {
+export default function Features() {
   return (
     <section className="features">
       <div className="features-container">

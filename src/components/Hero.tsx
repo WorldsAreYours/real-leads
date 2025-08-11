@@ -5,7 +5,7 @@ import IntakeModal from "@/components/IntakeModal";
 
 type ModalType = "buying" | "selling" | null;
 
-export default function Hero(): JSX.Element {
+export default function Hero() {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [modalType, setModalType] = useState<ModalType>(null);
 
